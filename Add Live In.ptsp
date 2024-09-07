@@ -21,8 +21,8 @@ script: |
   $if(%_secondComma%,$set(_albumpart2,$substr(%_remainingAlbum%,0,%_secondComma%)))
 
   # Append " (Live at <extracted part>)" to the title, using the second part of the album name
-  $if(%_albumpart2%,$set(title,%title% \(Live in $trim(%_albumpart2%) $substr(%releasedate%,2,4)'\)))
+  $if(%_albumpart2%,$set(title,%title% \(Live in $trim(%_albumpart2%) '$substr(%releasedate%,2,4)\)))
 
   # Add release type
   $setmulti(releasetype,album; live)
-id: db5bdb8e-df72-4d58-8a47-8ff42842eebc
+id: d819ab78-87b6-43f1-88b1-c01fb3f5c09d

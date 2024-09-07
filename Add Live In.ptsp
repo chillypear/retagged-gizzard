@@ -1,0 +1,28 @@
+title: Add Live In
+script_language_version: '1.1'
+script: |
+  # Remove everything after and including the first left parenthesis "(" in the title
+  $set(_firstParen,$find(%title%,\())
+  $if($ne(%_firstParen%,),$set(title,$trim($substr(%title%,0,%_firstParen%))))
+
+  # Find the position of the first comma in the album name
+  $set(_firstComma,$find(%album%,\,))
+
+  # Extract the first part of the album name up to the first comma
+  $if(%_firstComma%,$set(_albumpart1,$substr(%album%,0,%_firstComma%)))
+
+  # Extract the remaining part of the album name after the first comma
+  $if(%_albumpart1%,$set(_remainingAlbum,$substr(%album%,$add(%_firstComma%,1),)))
+
+  # Find the position of the second comma in the remaining album name
+  $if(%_remainingAlbum%,$set(_secondComma,$find(%_remainingAlbum%,\,)))
+
+  # Extract the second part of the album name up to the second comma
+  $if(%_secondComma%,$set(_albumpart2,$substr(%_remainingAlbum%,0,%_secondComma%)))
+
+  # Append " (Live at <extracted part>)" to the title, using the second part of the album name
+  $if(%_albumpart2%,$set(title,%title% \(Live in $trim(%_albumpart2%) $substr(%releasedate%,2,4)'\)))
+
+  # Add release type
+  $setmulti(releasetype,album; live)
+id: db5bdb8e-df72-4d58-8a47-8ff42842eebc

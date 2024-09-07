@@ -1,0 +1,31 @@
+title: Parse Date from Title
+script_language_version: '1.1'
+script: |
+  # Searches for a date in the format MM/DD/YY within the album name and sets it to _tempdate.
+  $set(_tempdate,$rsearch(%album%,\\d{1\,2}/\\d{1\,2}/\\d{2}))
+
+  # If _tempdate exists, extracts the month (first one or two digits) from _tempdate and sets it to _tempmonth.
+  $if(%_tempdate%,$set(_tempmonth,$rsearch(%_tempdate%,^\\d{1\,2})))
+
+  # If _tempmonth exists, pads it to two digits (e.g., "1" becomes "01") and sets it to _paddedmonth.
+  $if(%_tempmonth%,$set(_paddedmonth,$pad(%_tempmonth%,2,0)))
+
+  # If _paddedmonth exists, creates a new string _tempdate2 by taking the substring of _tempdate starting right after the month part (skipping over the month and the subsequent slash).
+  $if(%_paddedmonth%,$set(_tempdate2,$substr(%_tempdate%,$add($len(%_tempmonth%),1),$len(%_tempdate%))))
+
+  # If _tempdate2 exists, extracts the day (first one or two digits) from _tempdate2 and sets it to _tempday.
+  $if(%_tempdate2%,$set(_tempday,$rsearch(%_tempdate2%,^\\d{1\,2})))
+
+  # If _tempday exists, pads it to two digits (e.g., "3" becomes "03") and sets it to _paddedday.
+  $if(%_tempday%,$set(_paddedday,$pad(%_tempday%,2,0)))
+
+  # If _paddedday exists, creates _tempdate3 by taking the substring of _tempdate2 starting right after the day part (skipping over the day and the subsequent slash).
+  $if(%_paddedday%,$set(_tempdate3,$substr(%_tempdate2%,$add($len(%_tempday%),1),$len(%_tempdate2%))))
+
+  # If _tempdate3 exists, adds "20" in front of _tempdate3 to create a four-digit year (e.g., "21" becomes "2021") and sets it to _paddedyear.
+  $if(%_tempdate3%,$set(_paddedyear,20%_tempdate3%))
+
+  # If _paddedyear exists, combines _paddedyear, _paddedmonth, and _paddedday into a YYYY-MM-DD format and sets it to releasedate and date.
+  $if(%_paddedyear%,$set(releasedate,%_paddedyear%-%_paddedmonth%-%_paddedday%))
+  $if(%_paddedyear%,$set(date,%_paddedyear%-%_paddedmonth%-%_paddedday%))
+id: 9dced986-546f-4de5-8545-7276c1970bfb

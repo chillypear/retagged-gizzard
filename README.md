@@ -8,5 +8,5 @@ These scripts will add tags to the files via MusicBrainz Picard's tag scripting 
 The following tags are available:
 
 1) Tag to add date & releasedate tag
-2) Tag to modify title tag to _Name_ (Live at _Vanue_) and set the releasetype tag to album & live
+2) Tag to modify title tag to _Name_ (Live at _Venue_) and set the releasetype tag to album & live
 3) Tag to modify title tag to _Name_ (Live from _City_) and set the releasetype tag to album & live
